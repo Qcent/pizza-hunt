@@ -3,7 +3,7 @@ const { Comment, Pizza } = require('../models');
 const commentController = {
     // add a reply to a comment
     addReply({ params, body }, res) {
-        Comment.findOneAndUpdate({ _id: params.CommentId }, { $push: { replies: body } }, { new: true })
+        Comment.findOneAndUpdate({ _id: params.commentId }, { $push: { replies: body } }, { new: true })
             .then(dbCommentData => {
                 if (!dbCommentData) {
                     res.status(404).json({ message: 'No Comment found with this id!' });
@@ -16,7 +16,7 @@ const commentController = {
 
     // remove reply
     removeReply({ params }, res) {
-        Comment.findOneAndUpdate({ _id: params.CommentId }, { $pull: { replies: params.replyId } }, { new: true })
+        Comment.findOneAndUpdate({ _id: params.commentId }, { $pull: { replies: { replyId: params.replyId } } }, { new: true })
             .then(dbCommentData => {
                 if (!dbCommentData) {
                     res.status(404).json({ message: 'No Comment found with this id!' });
