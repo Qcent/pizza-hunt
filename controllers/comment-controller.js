@@ -3,7 +3,7 @@ const { Comment, Pizza } = require('../models');
 const commentController = {
     // add a reply to a comment
     addReply({ params, body }, res) {
-        Comment.findOneAndUpdate({ _id: params.commentId }, { $push: { replies: body } }, { new: true })
+        Comment.findOneAndUpdate({ _id: params.commentId }, { $push: { replies: body } }, { new: true, runValidators: true })
             .then(dbCommentData => {
                 if (!dbCommentData) {
                     res.status(404).json({ message: 'No Comment found with this id!' });
